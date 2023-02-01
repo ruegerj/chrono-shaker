@@ -42,4 +42,4 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Build
-              run: task app:build
+              run: task build
