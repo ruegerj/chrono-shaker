@@ -11,6 +11,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+const CHRONO_24_DOMAIN = "www.chrono24.com"
+
 type Chrono24Adapter struct {
 	filter *common.FilterOptions
 }
@@ -22,9 +24,11 @@ func NewChrono24Adapter(filter *common.FilterOptions) Chrono24Adapter {
 }
 
 func (adapter Chrono24Adapter) CreateListingsUrl() string {
-	return fmt.Sprintf("https://www.chrono24.com/%s/ref-%s.htm",
+	path := fmt.Sprintf("/%s/ref-%s.htm?resultview=block",
 		strings.ToLower(adapter.filter.Brand),
 		strings.ToLower(adapter.filter.RefNo))
+
+	return createChrono24Url(path)
 }
 
 func (adapter Chrono24Adapter) Parse(g *geziyor.Geziyor, r *client.Response) {
@@ -43,8 +47,17 @@ func (adapter Chrono24Adapter) Parse(g *geziyor.Geziyor, r *client.Response) {
 			return
 		}
 
-		listing := *common.NewWatchListing(brand, adapter.filter.RefNo, price, common.CHRONO_24, listingUrl)
+		listing := *common.NewWatchListing(brand,
+			adapter.filter.RefNo,
+			price,
+			common.CHRONO_24,
+			createChrono24Url(listingUrl),
+		)
 
 		g.Exports <- listing
 	})
+}
+
+func createChrono24Url(path string) string {
+	return fmt.Sprintf("https://%s%s", CHRONO_24_DOMAIN, path)
 }
