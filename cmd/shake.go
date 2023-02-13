@@ -38,6 +38,7 @@ var shakeCmd = &cobra.Command{
 	},
 }
 
+//nolint:errcheck
 func init() {
 	rootCmd.AddCommand(shakeCmd)
 
