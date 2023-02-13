@@ -32,15 +32,13 @@ func NewShaker(platform common.Platform, filter *common.FilterOptions) (*Shaker,
 }
 
 func (shaker *Shaker) ShakeListings() []common.WatchListing {
-	listings := make([]common.WatchListing, 0)
+	exporter := common.NewMemoryExport[common.WatchListing]()
+
+	shaker.scraper.Opt.Exporters = append(shaker.scraper.Opt.Exporters, exporter)
 
 	shaker.scraper.Start()
 
-	for listing := range shaker.scraper.Exports {
-		listings = append(listings, listing.(common.WatchListing))
-	}
-
-	return listings
+	return exporter.Results
 }
 
 func createDefaultOptions() *geziyor.Options {

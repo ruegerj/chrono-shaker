@@ -31,7 +31,7 @@ var shakeCmd = &cobra.Command{
 		results := shaker.ShakeListings()
 
 		for _, res := range results {
-			cmd.Println(res)
+			cmd.Println(res.String())
 		}
 
 		return nil

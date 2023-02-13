@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/shopspring/decimal"
@@ -22,4 +23,14 @@ func NewWatchListing(brand string, refNo string, price decimal.Decimal, platform
 		Platform: platform,
 		Date:     time.Now(),
 	}
+}
+
+func (listing *WatchListing) String() string {
+	return fmt.Sprintf("%s %s: %d (%s / %v)",
+		listing.Brand,
+		listing.RefNo,
+		listing.Price.CoefficientInt64(),
+		listing.Platform,
+		listing.Date.Format(time.RFC822),
+	)
 }
