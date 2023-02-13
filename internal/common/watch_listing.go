@@ -3,20 +3,18 @@ package common
 import (
 	"fmt"
 	"time"
-
-	"github.com/shopspring/decimal"
 )
 
 type WatchListing struct {
 	Brand    string
 	RefNo    string
-	Price    decimal.Decimal
+	Price    *Price
 	Platform Platform
 	Url      string
 	Date     time.Time
 }
 
-func NewWatchListing(brand string, refNo string, price decimal.Decimal, platform Platform, url string) *WatchListing {
+func NewWatchListing(brand string, refNo string, price *Price, platform Platform, url string) *WatchListing {
 	return &WatchListing{
 		Brand:    brand,
 		RefNo:    refNo,
@@ -28,11 +26,11 @@ func NewWatchListing(brand string, refNo string, price decimal.Decimal, platform
 }
 
 func (listing *WatchListing) String() string {
-	return fmt.Sprintf("[%s] %s %s: %d (%s)",
+	return fmt.Sprintf("[%s] %s %s: %s (%s)",
 		listing.Platform,
 		listing.Brand,
 		listing.RefNo,
-		listing.Price.CoefficientInt64(),
+		listing.Price,
 		listing.Url,
 	)
 }

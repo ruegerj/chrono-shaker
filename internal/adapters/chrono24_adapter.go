@@ -36,9 +36,10 @@ func (adapter Chrono24Adapter) Parse(g *geziyor.Geziyor, r *client.Response) {
 
 		priceRaw = strings.TrimPrefix(priceRaw, "\n$")
 		priceRaw = strings.ReplaceAll(priceRaw, ",", ".")
-		price, _ := decimal.NewFromString(priceRaw)
+		priceValue, _ := decimal.NewFromString(priceRaw)
+		price := common.NewPrice(priceValue, "$")
 
-		if brand == common.NO_VALUE || price.IsZero() {
+		if brand == common.NO_VALUE || price.Value.IsZero() {
 			return
 		}
 
