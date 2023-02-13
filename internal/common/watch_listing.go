@@ -12,25 +12,27 @@ type WatchListing struct {
 	RefNo    string
 	Price    decimal.Decimal
 	Platform Platform
+	Url      string
 	Date     time.Time
 }
 
-func NewWatchListing(brand string, refNo string, price decimal.Decimal, platform Platform) *WatchListing {
+func NewWatchListing(brand string, refNo string, price decimal.Decimal, platform Platform, url string) *WatchListing {
 	return &WatchListing{
 		Brand:    brand,
 		RefNo:    refNo,
 		Price:    price,
 		Platform: platform,
+		Url:      url,
 		Date:     time.Now(),
 	}
 }
 
 func (listing *WatchListing) String() string {
-	return fmt.Sprintf("%s %s: %d (%s / %v)",
+	return fmt.Sprintf("[%s] %s %s: %d (%s)",
+		listing.Platform,
 		listing.Brand,
 		listing.RefNo,
 		listing.Price.CoefficientInt64(),
-		listing.Platform,
-		listing.Date.Format(time.RFC822),
+		listing.Url,
 	)
 }

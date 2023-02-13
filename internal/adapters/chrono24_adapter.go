@@ -29,14 +29,20 @@ func (adapter Chrono24Adapter) CreateListingsUrl() string {
 
 func (adapter Chrono24Adapter) Parse(g *geziyor.Geziyor, r *client.Response) {
 	r.HTMLDoc.Find("div.article-item-container").Each(func(_ int, s *goquery.Selection) {
-		brand := s.Find("a").AttrOr("data-manufacturer", "n/a")
+		listingAnchor := s.Find("a")
+		brand := listingAnchor.AttrOr("data-manufacturer", common.NO_VALUE)
 		priceRaw := s.Find("span.currency").Parent().Text()
+		listingUrl := listingAnchor.AttrOr("href", common.NO_VALUE)
 
 		priceRaw = strings.TrimPrefix(priceRaw, "\n$")
 		priceRaw = strings.ReplaceAll(priceRaw, ",", ".")
 		price, _ := decimal.NewFromString(priceRaw)
 
-		listing := *common.NewWatchListing(brand, adapter.filter.RefNo, price, common.CHRONO_24)
+		if brand == common.NO_VALUE || price.IsZero() {
+			return
+		}
+
+		listing := *common.NewWatchListing(brand, adapter.filter.RefNo, price, common.CHRONO_24, listingUrl)
 
 		g.Exports <- listing
 	})
