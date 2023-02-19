@@ -15,18 +15,11 @@ var shakeCmd = &cobra.Command{
 	Short: "Looks up the average price for a watch",
 	Long:  `Looks up the average price of the specified watch on all supported marketplaces.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		// TODO: replace through proper cli arg
-		const platform = common.CHRONO_24
-
 		brand := cmd.Flag(MANUFACTURER_ARG).Value.String()
 		refNo := cmd.Flag(REF_NO_ARG).Value.String()
 
-		filter := common.NewFilterOptions(brand, refNo)
-		shaker, err := shaker.NewShaker(platform, filter)
-
-		if err != nil {
-			return err
-		}
+		filter := common.NewFilterOptions(brand, refNo, common.AllPlatforms)
+		shaker := shaker.NewShaker(filter)
 
 		results := shaker.ShakeListings()
 

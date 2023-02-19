@@ -17,3 +17,24 @@ func (me *MemoryExport[TResult]) Export(exports chan interface{}) error {
 
 	return nil
 }
+
+type ChannelPipeExporter[TResult interface{}] struct {
+	targetChan chan TResult
+}
+
+func NewChannelPipeExporter[TResult interface{}](target chan TResult) *ChannelPipeExporter[TResult] {
+	return &ChannelPipeExporter[TResult]{targetChan: target}
+}
+
+func (cpe *ChannelPipeExporter[TResult]) Export(exports chan interface{}) error {
+	go func() {
+		for result := range exports {
+			cpe.targetChan <- result.(TResult)
+		}
+
+		var emptyResult TResult
+		cpe.targetChan <- emptyResult
+	}()
+
+	return nil
+}
