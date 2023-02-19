@@ -3,17 +3,17 @@
 version: "3"
 
 tasks:
-  build:
-    summary: Builds the app
-    cmds:
-      - go build -o bin/chrono-shaker{{exeExt}} .
+    build:
+        summary: Builds the app
+        cmds:
+            - go build -o bin/chrono-shaker{{exeExt}} .
 
-  lint:
-    summary: Lints the app
-    cmds:
-      - golangci-lint run ./...
+    lint:
+        summary: Lints the app
+        cmds:
+            - golangci-lint run -c golangci.yaml ./...
 
-  default:
-    cmds:
-      - task --list-all
-    silent: true
+    default:
+        cmds:
+            - task --list-all
+        silent: true
