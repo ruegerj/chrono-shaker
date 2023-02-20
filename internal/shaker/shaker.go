@@ -68,7 +68,9 @@ func (shaker *Shaker) scrapePlatform(platform common.Platform, output chan commo
 }
 
 func buildScraper(adapter common.PlatformAdapter) *geziyor.Geziyor {
-	defaultOptions := &geziyor.Options{}
+	defaultOptions := &geziyor.Options{
+		LogDisabled: true,
+	}
 	targetUrl := adapter.CreateListingsUrl()
 
 	// Customize options based on adapter
