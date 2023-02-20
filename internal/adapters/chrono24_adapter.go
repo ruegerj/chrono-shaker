@@ -24,7 +24,7 @@ func NewChrono24Adapter(filter *common.FilterOptions) Chrono24Adapter {
 }
 
 func (adapter Chrono24Adapter) CreateListingsUrl() string {
-	path := fmt.Sprintf("/%s/ref-%s.htm?resultview=block",
+	path := fmt.Sprintf("/%s/ref-%s.htm?pageSize=120&resultview=block",
 		strings.ToLower(adapter.filter.Brand),
 		strings.ToLower(adapter.filter.RefNo))
 
